@@ -15,6 +15,10 @@ public class Mutex {
     }
 
     public void _lock() throws InterruptedException {
+        if (!Thread.currentThread().equals(currentThread.get())) {
+            throw new RuntimeException("You can't lock mutex 2 or more times");
+        }
+
         while (!currentThread.compareAndSet(null, Thread.currentThread())) {
             Thread.sleep(SLEEP_TIME);
         }
@@ -22,6 +26,10 @@ public class Mutex {
     }
 
     public void _release() {
+        if (!Thread.currentThread().equals(currentThread.get())) {
+            throw new RuntimeException("You can't call release when you don't have lock");
+        }
+
         currentThread.set(null);
         System.out.println("Mutex released by: " + Thread.currentThread().getName());
     }
@@ -29,7 +37,7 @@ public class Mutex {
     public void _wait() throws InterruptedException {
         Thread thread = Thread.currentThread();
         if (!thread.equals(currentThread.get())) {
-            throw new RuntimeException("You should take mutex before use of wait method");
+            throw new RuntimeException("You should lock mutex before use of wait method");
         }
 
         waitingThreads.put(thread);
