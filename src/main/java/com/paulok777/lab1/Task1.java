@@ -4,12 +4,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Task1 {
 
-    private Mutex mutex;
-
-    public Task1(Mutex mutex) {
-        this.mutex = mutex;
-    }
-
     public static void main(String[] args) throws InterruptedException {
         LinkedBlockingQueue<Runnable> listOfWaitingThreads = new LinkedBlockingQueue<>();
         Mutex mutex1 = new Mutex(listOfWaitingThreads);
@@ -24,16 +18,16 @@ public class Task1 {
         }
 
         // Test notify
-//        for (int i = 0; i < 10; i++) {
-//            Thread.sleep(500);
-//            mutex1._notify();
-//        }
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(500);
+            mutex1._notify();
+        }
 
         // Test notifyAll
-        for (int i = 0; i < 5; i++) {
-            Thread.sleep(500);
-            mutex1._notifyAll();
-        }
+//        for (int i = 0; i < 5; i++) {
+//            Thread.sleep(500);
+//            mutex1._notifyAll();
+//        }
     }
 
     static class Test1 implements Runnable {
@@ -52,7 +46,7 @@ public class Task1 {
             } catch (InterruptedException ex) {
                 System.err.println(ex.getMessage());
             } finally {
-                mutex._release();
+                mutex._unlock();
             }
         }
     }

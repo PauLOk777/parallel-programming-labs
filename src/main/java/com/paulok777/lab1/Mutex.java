@@ -5,8 +5,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Mutex {
 
-    private static final long SLEEP_TIME = 100L;
-
     private AtomicReference<Runnable> currentThread = new AtomicReference<>();
     private LinkedBlockingQueue<Runnable> waitingThreads;
 
@@ -15,23 +13,23 @@ public class Mutex {
     }
 
     public void _lock() throws InterruptedException {
-        if (!Thread.currentThread().equals(currentThread.get())) {
+        if (Thread.currentThread().equals(currentThread.get())) {
             throw new RuntimeException("You can't lock mutex 2 or more times");
         }
 
         while (!currentThread.compareAndSet(null, Thread.currentThread())) {
-            Thread.sleep(SLEEP_TIME);
+            Thread.yield();
         }
         System.out.println("Mutex took by: " + Thread.currentThread().getName());
     }
 
-    public void _release() {
+    public void _unlock() {
         if (!Thread.currentThread().equals(currentThread.get())) {
-            throw new RuntimeException("You can't call release when you don't have lock");
+            throw new RuntimeException("You can't call unlock when you don't have lock");
         }
 
+        System.out.println("Mutex unlocked by: " + Thread.currentThread().getName());
         currentThread.set(null);
-        System.out.println("Mutex released by: " + Thread.currentThread().getName());
     }
 
     public void _wait() throws InterruptedException {
@@ -42,10 +40,13 @@ public class Mutex {
 
         waitingThreads.put(thread);
         System.out.println("Waiting: " + Thread.currentThread().getName());
+        _unlock();
 
         while (waitingThreads.contains(thread)) {
-            Thread.sleep(SLEEP_TIME);
+            Thread.yield();
         }
+
+        _lock();
         System.out.println("No waiting any more: " + Thread.currentThread().getName());
     }
 
