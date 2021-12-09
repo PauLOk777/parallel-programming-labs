@@ -1,4 +1,4 @@
-package com.paulok777.lab1;
+package com.paulok777.lab1.task1;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
