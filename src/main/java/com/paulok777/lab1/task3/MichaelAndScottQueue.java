@@ -20,7 +20,7 @@ public class MichaelAndScottQueue<T> {
         }
     }
 
-    public T pop() {
+    public T remove() {
         while (true) {
             Node<T> currentHead = head.get();
             Node<T> currentTail = tail.get();
@@ -40,7 +40,7 @@ public class MichaelAndScottQueue<T> {
         }
     }
 
-    public void push(T data) {
+    public void add(T data) {
         Node<T> newTail = new Node<>(data, new AtomicReference<>(null));
 
         while(true) {

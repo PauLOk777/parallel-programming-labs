@@ -28,9 +28,9 @@ public class Task3 {
 
         @Override
         public void run() {
-            michaelAndScottQueue.push(Thread.currentThread().getName());
+            michaelAndScottQueue.add(Thread.currentThread().getName());
             if (Math.random() > 0.3) {
-                michaelAndScottQueue.pop();
+                michaelAndScottQueue.remove();
             }
         }
     }
