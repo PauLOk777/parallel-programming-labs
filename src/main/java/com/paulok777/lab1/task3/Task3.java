@@ -7,7 +7,7 @@ public class Task3 {
         Thread[] arr = new Thread[10];
 
         for (int i = 0; i < 10; i++) {
-            arr[i] = new Thread(new Test2(michaelAndScottQueue));
+            arr[i] = new Thread(new Test3(michaelAndScottQueue));
             arr[i].start();
         }
 
@@ -18,11 +18,11 @@ public class Task3 {
         michaelAndScottQueue.nonSafePrint();
     }
 
-    static class Test2 implements Runnable {
+    static class Test3 implements Runnable {
 
         private MichaelAndScottQueue<String> michaelAndScottQueue;
 
-        public Test2(MichaelAndScottQueue<String> michaelAndScottQueue) {
+        public Test3(MichaelAndScottQueue<String> michaelAndScottQueue) {
             this.michaelAndScottQueue = michaelAndScottQueue;
         }
 
