@@ -8,7 +8,7 @@ public class HarrisOrderedList<T extends Comparable<? super T>> {
     private Node<T> dummy = new Node<>(null, new AtomicReference<>(null));
     private AtomicReference<Node<T>> head = new AtomicReference<>(dummy);
 
-    static class Node<T extends Comparable<? super T>> {
+    static class Node<T> {
 
         public T key;
         public AtomicReference<Node<T>> next;
