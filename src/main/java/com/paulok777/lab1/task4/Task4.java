@@ -21,7 +21,7 @@ public class Task4 {
 
     static class Test4 implements Runnable {
 
-        HarrisOrderedList<String> harrisOrderedList;
+        private HarrisOrderedList<String> harrisOrderedList;
 
         public Test4(HarrisOrderedList<String> harrisOrderedList) {
             this.harrisOrderedList = harrisOrderedList;
