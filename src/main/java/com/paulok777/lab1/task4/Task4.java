@@ -15,7 +15,7 @@ public class Task4 {
             arr[i].join();
         }
 
-
+        System.out.println("Contains: " + harrisOrderedList.contains("Thread-1"));
         harrisOrderedList.nonSafePrint();
     }
 
@@ -31,11 +31,9 @@ public class Task4 {
         public void run() {
             String currThreadName = Thread.currentThread().getName();
             harrisOrderedList.add(currThreadName);
-            if (currThreadName.equals("Thread-6")
-                    || currThreadName.equals("Thread-3")
-                    || currThreadName.equals("Thread-0")
-            ) {
-                harrisOrderedList.remove(currThreadName);
+
+            if (currThreadName.equals("Thread-4")) {
+                System.out.println("Remove: " + harrisOrderedList.remove(currThreadName));
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.paulok777.lab1.task4;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static java.util.Objects.nonNull;
+import static java.util.Objects.isNull;
 
 public class HarrisOrderedList<T extends Comparable<? super T>> {
 
@@ -10,66 +12,81 @@ public class HarrisOrderedList<T extends Comparable<? super T>> {
 
     static class Node<T> {
 
-        public T key;
+        public T data;
         public AtomicReference<Node<T>> next;
 
-        public Node(T key, AtomicReference<Node<T>> next) {
-            this.key= key;
+        public Node(T data, AtomicReference<Node<T>> next) {
+            this.data = data;
             this.next = next;
         }
     }
 
     public boolean remove(T key) {
-        if (Objects.isNull(key)) {
+        if (isNull(key)) {
             throw new IllegalArgumentException("Argument should not be null");
         }
 
         Node<T> prevEl = head.get();
-        while (Objects.nonNull(prevEl.next.get())) {
+        while (nonNull(prevEl.next.get())) {
             Node<T> currEl = prevEl.next.get();
             Node<T> nextEl = currEl.next.get();
 
-            if (currEl.key.compareTo(key) == 0) {
-                currEl.next.compareAndSet(nextEl, null);
-                prevEl.next.compareAndSet(currEl, nextEl);
-                return true;
+            if (currEl.data.compareTo(key) == 0) {
+                if (currEl.next.compareAndSet(nextEl, null) && prevEl.next.compareAndSet(currEl, nextEl)) {
+                    return true;
+                }
+            } else {
+                prevEl = currEl;
             }
-
-            prevEl = prevEl.next.get();
         }
 
         return false;
     }
 
     public void add(T key) {
-        if (Objects.isNull(key)) {
+        if (isNull(key)) {
             throw new IllegalArgumentException("Argument should not be null");
         }
 
         Node<T> newEl = new Node<>(key, new AtomicReference<>(null));
         Node<T> currentEl = head.get();
 
-        while (Objects.nonNull(currentEl.next.get())) {
+        while (true) {
             Node<T> nextEl = currentEl.next.get();
-            if (nextEl.key.compareTo(key) >= 0) {
-                newEl.next = new AtomicReference<>(nextEl);
-                if (currentEl.next.compareAndSet(newEl.next.get(), newEl)) {
-                    return;
+
+            if (nonNull(nextEl)) {
+                if (nextEl.data.compareTo(key) >= 0) {
+                    newEl.next = new AtomicReference<>(nextEl);
+                    if (currentEl.next.compareAndSet(nextEl, newEl)) {
+                        return;
+                    }
                 } else {
-                    continue;
+                    currentEl = nextEl;
                 }
+            } else if (currentEl.next.compareAndSet(null, newEl)) {
+                return;
+            }
+        }
+    }
+
+    public boolean contains(T data) {
+        Node<T> currentEl = head.get().next.get();
+
+        while (nonNull(currentEl)) {
+            if (currentEl.data.compareTo(data) == 0) {
+                return true;
             }
 
-            currentEl = nextEl;
+            currentEl = currentEl.next.get();
         }
 
-        currentEl.next.compareAndSet(null, newEl);
+        return false;
     }
 
     public void nonSafePrint() {
         Node<T> current = head.get().next.get();
-        while (Objects.nonNull(current)) {
-            System.out.println(current.key);
+        while (nonNull(current)) {
+            System.out.println(current.data);
             current = current.next.get();
         }
     }
