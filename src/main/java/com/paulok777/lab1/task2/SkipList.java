@@ -1,7 +1,6 @@
 package com.paulok777.lab1.task2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
