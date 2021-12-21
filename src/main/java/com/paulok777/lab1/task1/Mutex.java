@@ -20,6 +20,7 @@ public class Mutex {
         while (!currentThread.compareAndSet(null, Thread.currentThread())) {
             Thread.yield();
         }
+
         System.out.println("Mutex took by: " + Thread.currentThread().getName());
     }
 

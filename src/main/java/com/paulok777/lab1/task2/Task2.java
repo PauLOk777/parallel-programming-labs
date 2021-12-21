@@ -30,7 +30,11 @@ public class Task2 {
         @Override
         public void run() {
             String currThreadName = Thread.currentThread().getName();
-            System.out.println("Add " + currThreadName + ": " + skipList.add(currThreadName));
+            while (!skipList.add(currThreadName)) {
+                System.out.println("Add " + currThreadName + ": false");
+            }
+
+            System.out.println("Add " + currThreadName + ": true");
 
             if (currThreadName.equals("Thread-4")) {
                 System.out.println("Remove " + currThreadName + ": " + skipList.remove(currThreadName));

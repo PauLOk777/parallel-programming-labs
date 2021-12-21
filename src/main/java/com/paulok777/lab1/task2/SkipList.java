@@ -113,7 +113,7 @@ public class SkipList<T extends Comparable<? super T>> {
                 newEl.down = downEl;
             }
 
-            if (!prev.get(i).right.compareAndSet(prevRight.get(i), newEl)) {
+            if (!prev.get(i).right.compareAndSet(prevRight.get(i), newEl) && i == prev.size() - 1) {
                 return false;
             }
 
